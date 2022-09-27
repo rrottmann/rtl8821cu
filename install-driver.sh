@@ -1,11 +1,16 @@
 #!/bin/bash
 
+# Purpose: Install Realtek USB WiFi adapter drivers.
+#
+# This version of the installation script uses dkms.
+
 SCRIPT_NAME="install-driver.sh"
-SCRIPT_VERSION="20220705"
+SCRIPT_VERSION="20220821"
+OPTIONS_FILE="8821cu.conf"
+BLACKLIST_FILE="rtw88_8821cu.conf"
 
 DRV_NAME="rtl8821cu"
 DRV_VERSION="5.12.0"
-OPTIONS_FILE="8821cu.conf"
 
 DRV_DIR="$(pwd)"
 KRNL_VERSION="$(uname -r)"
@@ -49,22 +54,29 @@ then
 fi
 
 # information that helps with bug reports
+
 # displays script name and version
 echo "Running ${SCRIPT_NAME} version ${SCRIPT_VERSION}"
-# distro (need to work on this)
-#hostnamectl | grep 'Operating System' | sed 's/  Operating System: //'
+
 # kernel
 uname -r
+
 # architecture - for ARM: aarch64 = 64 bit, armv7l = 32 bit
 uname -m
-#getconf LONG_BIT (need to work on this)
 
 echo "Starting installation..."
+
 # the add command requires source in /usr/src/${DRV_NAME}-${DRV_VERSION}
 echo "Copying source files to: /usr/src/${DRV_NAME}-${DRV_VERSION}"
 cp -rf "${DRV_DIR}" /usr/src/${DRV_NAME}-${DRV_VERSION}
+
+# sets module parameters (driver options)
 echo "Copying ${OPTIONS_FILE} to: /etc/modprobe.d"
 cp -f ${OPTIONS_FILE} /etc/modprobe.d
+
+# blacklist the in-kernel module (driver) so that there is no conflict
+echo "Copying ${BLACKLIST_FILE} to: /etc/modprobe.d"
+cp -f ${BLACKLIST_FILE} /etc/modprobe.d
 
 dkms add -m ${DRV_NAME} -v ${DRV_VERSION}
 RESULT=$?
@@ -73,6 +85,7 @@ if [[ "$RESULT" != "0" ]]
 then
 	echo "An error occurred. dkms add error = ${RESULT}"
 	echo "Please report this error."
+	echo "Please copy all screen output and paste it into the report."
 	echo "You will need to run the following before reattempting installation."
 	echo "$ sudo ./remove-driver.sh"
 	exit $RESULT
@@ -85,6 +98,7 @@ if [[ "$RESULT" != "0" ]]
 then
 	echo "An error occurred. dkms build error = ${RESULT}"
 	echo "Please report this error."
+	echo "Please copy all screen output and paste it into the report."
 	echo "You will need to run the following before reattempting installation."
 	echo "$ sudo ./remove-driver.sh"
 	exit $RESULT

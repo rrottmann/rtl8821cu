@@ -5,8 +5,9 @@
 # This version of the installation script does not use dkms.
 
 SCRIPT_NAME="install-driver-no-dkms.sh"
-SCRIPT_VERSION="20220705"
+SCRIPT_VERSION="20220821"
 OPTIONS_FILE="8821cu.conf"
+BLACKLIST_FILE="rtw88_8821cu.conf"
 
 # support for NoPrompt allows non-interactive use of this script
 NO_PROMPT=0
@@ -36,19 +37,25 @@ then
 fi
 
 # information that helps with bug reports
+
 # displays script name and version
 echo "Running ${SCRIPT_NAME} version ${SCRIPT_VERSION}"
-# distro (need to work on this)
-#hostnamectl | grep 'Operating System' | sed 's/  Operating System: //'
+
 # kernel
 uname -r
+
 # architecture - for ARM: aarch64 = 64 bit, armv7l = 32 bit
 uname -m
-#getconf LONG_BIT (need to work on this)
 
 echo "Starting installation..."
+
+# sets module parameters (driver options)
 echo "Copying ${OPTIONS_FILE} to: /etc/modprobe.d"
 cp -f ${OPTIONS_FILE} /etc/modprobe.d
+
+# blacklist the in-kernel module (driver) so that there is no conflict
+echo "Copying ${BLACKLIST_FILE} to: /etc/modprobe.d"
+cp -f ${BLACKLIST_FILE} /etc/modprobe.d
 
 make clean
 
@@ -59,6 +66,7 @@ if [[ "$RESULT" != "0" ]]
 then
 	echo "An error occurred. Error = ${RESULT}"
 	echo "Please report this error."
+	echo "Please copy all screen output and paste it into the report."
 	echo "You will need to run the following before reattempting installation."
 	echo "$ sudo ./remove-driver-no-dkms.sh"
 	exit $RESULT
@@ -71,6 +79,7 @@ if [[ "$RESULT" != "0" ]]
 then
 	echo "An error occurred. Error = ${RESULT}"
 	echo "Please report this error."
+	echo "Please copy all screen output and paste it into the report."
 	echo "You will need to run the following before reattempting installation."
 	echo "$ sudo ./remove-driver-no-dkms.sh"
 	exit $RESULT

@@ -11,7 +11,7 @@
 #### Problem reports go in `Issues`. Include the information obtained with:
 
 ```
-sudo uname -a; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev
+sudo uname -mr; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev; iw reg get
 ```
 
 -----
@@ -21,7 +21,6 @@ sudo uname -a; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev
 ## Linux Driver for USB WiFi Adapters that are based on the RTL8811CU, RTL8821CU and RTL8731AU Chipsets
 
 - v5.12.0 (Realtek) (20210118) plus updates from the Linux community
-- 1,300+ Views over the 2 weeks ended on 20220606 (Thank you!)
 
 ### Features
 
@@ -42,8 +41,8 @@ sudo uname -a; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev
 - Supported interface modes
   * IBSS
   * Managed
-  * Monitor
-  * AP
+  * Monitor (see FAQ)
+  * AP (see FAQ)
   * P2P-client
   * P2P-GO
   * Concurrent (see `Concurrent_Mode.md` in the `docs` folder.)
@@ -61,7 +60,7 @@ sudo uname -a; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev
 ### Compatible Kernels
 
 - Kernels: 4.19 - 5.11 (Realtek)
-- Kernels: 5.12 - 5.19 (community support)
+- Kernels: 5.12 - 6.0  (community support)
 
 ### Tested Linux Distributions
 
@@ -76,13 +75,13 @@ the Installation Steps can be improved.
 
 - Arch Linux (kernels 5.4 and 5.11)
 
-- Fedora (kernel 5.11)
-
 - Debian 11 (kernels 5.10 and 5.15)
+
+- Fedora (kernel 5.11)
 
 - Kali Linux (kernel 5.10)
 
-- Manjaro 20.1 (kernel 5.9) and 21.1 (kernel 5.13)
+- Manjaro 21.1 (kernel 5.13)
 
 - openSUSE Tumbleweed (rolling) (kernel 5.15)
 
@@ -90,9 +89,9 @@ the Installation Steps can be improved.
 
 - Raspberry Pi Desktop (x86 32 bit) (kernel 4.19)
 
-- Solus
-
 - Ubuntu 22.04 (kernel 5.15)
+
+- Void Linux (kernel 5.18)
 
 ### Download Locations for Tested Linux Distributions
 
@@ -103,8 +102,8 @@ the Installation Steps can be improved.
 - [Manjaro](https://manjaro.org)
 - [openSUSE](https://www.opensuse.org/)
 - [Raspberry Pi OS](https://www.raspberrypi.org)
-- [Solus](https://getsol.us/home/)
 - [Ubuntu](https://www.ubuntu.com)
+- [Void Linux](https://voidlinux.org/)
 
 ### Tested Hardware
 
@@ -113,6 +112,8 @@ the Installation Steps can be improved.
 
 
 ### Compatible Devices
+
+Warning: Adapters listed here are not recommended for purchase as I do not recommend Linux users buy Realtek based USB WiFi adapters due to the lack of mac80211 technology drivers that are supported in-kernel as called for by Linux Wireless Standards. This repo is supported for the benefit of Linux users who already have adapters based on the supported chipsets. If you are looking for information about what adapter to buy, click [here](https://github.com/morrownr/USB-WiFi) for information about and links to recommended adapters.
 
 * Cudy WU700
 * BrosTrend AC5L
@@ -140,8 +141,15 @@ driver by running the following command:
 sudo dkms status
 ```
 
-The installation instructions are for the novice user. Experienced users are
-welcome to alter the installation to meet their needs.
+Warning: If you decide to upgrade to a new version of kernel such as 5.18 to 5.19, you
+need to remove the driver you have installed and install the newest available before
+installing the new kernel. Use the following commands in the driver directory:
+
+```
+$ sudo ./remove-driver.sh
+$ git pull
+$ sudo ./install-driver.sh
+```
 
 Temporary internet access is required for installation. There are numerous ways
 to enable temporary internet access depending on your hardware and situation.
@@ -169,17 +177,19 @@ It is recommended that you do not delete the driver directory after installation
 as the directory contains information and scripts that you may need in the future.
 
 Secure mode: The primary installation script, `install-driver.sh`, will support
-secure mode... if your distro supports the method in use. I regularly test the installation
-script on systems with secure mode on. It works very well on Ubuntu based distros. Some
-distros, such as Raspberry Pi OS, do not support secure mode because the hardware they
-support does not support secure mode making it unnecessary. There are distros that do not
-work with the support currently in use with this driver. If you install this driver and,
-after a reboot, the driver is not working, you can go into the BIOS and tempoarily turn
-secure mode off to see if secure mode is the problem. I am currently investigating alternative
-ways to support secure mode that will work on most or all distros that support secure mode.
-If you are interested in helping, please post a message in `Issues`.
+secure mode... if your distro supports the method dkms uses. I regularly test the
+installation script on systems with secure mode on. It works very well on Ubuntu based
+distros. Some distros, such as Raspberry Pi OS, do not support secure mode because the
+hardware they support does not support secure mode making it unnecessary. There are
+distros that do not work with the support currently in use. If you install this driver
+and, after a reboot, the driver is not working, you can go into the BIOS and temporarily
+turn secure mode off to see if secure mode is the problem.
 
 ### Installation Steps
+
+Note: The installation instructions are for the novice user. Experienced users are
+welcome to alter the installation to meet their needs. Support will be provided based
+on the steps below.
 
 #### Step 1: Open a terminal (e.g. Ctrl+Alt+T)
 
@@ -211,6 +221,12 @@ sudo dnf upgrade
 
 ```
 sudo zypper update
+```
+
+- Option for Void Linux
+
+```
+sudo xbps-install -Syu
 ```
 
 Note: It is recommended that you reboot your system at this point. The
@@ -253,10 +269,10 @@ sudo dnf -y install git dkms kernel-devel kernel-debug-devel
 sudo zypper install -t pattern devel_kernel dkms
 ```
 
-- Option for Solus
+- Option for Void Linux
 
 ```
-sudo eopkg install gcc linux-current-headers make git binutils
+sudo xbps-install linux-headers dkms git make
 ```
 
 - Options for Arch and Manjaro
@@ -371,9 +387,9 @@ Note: If you elect to skip the reboot at the end of the installation
 script, the driver may not load immediately and the driver options will
 not be applied. Rebooting is strongly recommended.
 
-Manual build instructions: The scripts automate the installation process,
-however, if you want to or need to do a command line installation, use
-the following:
+Manual build instructions: The above scripts automate the installation
+process, however, if you want to or need to do a command line
+installation, use the following:
 
 ```
 make clean
@@ -391,7 +407,7 @@ installed in your distro.
 ### Driver Options ( edit-options.sh )
 
 A file called `8821cu.conf` will be installed in `/etc/modprobe.d` by
-default.
+default if you use one of the scripts for installation.
 
 Note: The installation script will prompt you to edit the options.
 
@@ -482,7 +498,7 @@ After making and saving changes, reboot the router.
 
 - Avoid USB 3.1 Gen 2 ports if possible as almost all currently available adapters have been tested with USB 3.1 Gen 1 (aka USB 3) and not with USB 3.1 Gen 2.
 
-- If you use an extension cable and your adapter is USB 3 capable, the cable needs to be USB 3 capable (if not, you will at best be limited to USB 2 speeds).
+- If you use an extension cable and your adapter is USB 3 capable, the cable needs to be USB 3 capable (if not, you will be limited to USB 2 speeds).
 
 - Extention cables can be problematic. A way to check if the extension cable is the problem is to plug the adapter temporarily into a USB port on the computer.
 
