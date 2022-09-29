@@ -63,7 +63,9 @@ then
 	rm -f /etc/modprobe.d/${BLACKLIST_FILE}
 	echo "Deleting source files from /usr/src/${DRV_NAME}-${DRV_VERSION}"
 	rm -rf /usr/src/${DRV_NAME}-${DRV_VERSION}
-	make uninstall
+	echo "Removing a non-dkms installation."
+	rm -f $(MODDESTDIR)$(MODULE_NAME).ko
+	/sbin/depmod -a ${KVER}
 	echo "The driver was removed successfully."
 	echo "You may now delete the driver directory if desired."
 else
