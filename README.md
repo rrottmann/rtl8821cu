@@ -367,27 +367,19 @@ discover the settings and make a new script that works with your ARM or
 ARM64 based system, you are welcome to submit the script and information
 to be included here.
 
-#### Step 10: Run the installation script ( install-driver.sh or install-driver-no-dkms.sh )
+#### Step 10: Run the installation script ( install-driver.sh )
 
 Note: For automated builds (non-interactive), use _NoPrompt_ as an option.
 
-Option for distros that support `dkms` (almost all)
-
 ```
 sudo ./install-driver.sh
-```
-
-Option for distros that do not support `dkms`
-
-```
-sudo ./install-driver-no-dkms.sh
 ```
 
 Note: If you elect to skip the reboot at the end of the installation
 script, the driver may not load immediately and the driver options will
 not be applied. Rebooting is strongly recommended.
 
-Manual build instructions: The above scripts automate the installation
+Manual build instructions: The above script automates the installation
 process, however, if you want to or need to do a command line
 installation, use the following:
 
@@ -398,9 +390,8 @@ sudo make install
 sudo reboot
 ```
 
-Note: If you use the manual build instructions or the `install-driver-no-dkms.sh`
-script, you will need to repeat the process each time a new kernel is
-installed in your distro.
+Note: If you use the manual build instructions script, you will need
+to repeat the process each time a new kernel is installed in your distro.
 
 -----
 
@@ -468,7 +459,7 @@ sudo ./remove-driver-no-dkms.sh
 
 Note: These are general recommendations, some of which may not apply to your specific situation.
 
-- Security: Set WPA2-AES. Do not set WPA2 mixed mode or WPA or TKIP.
+- Security: Set WPA2-AES or WPA2/WPA3 mixed or WPA3. Do not set WPA2 mixed mode or WPA or TKIP.
 
 - Channel width for 2.4 GHz: Set 20 MHz fixed width. Do not use 40 MHz or 20/40 automatic.
 
@@ -536,42 +527,32 @@ sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
 Question: Is WPA3 supported?
 
-Answer: WPA3-SAE support is in this driver according to Realtek, however, for it
-to work in client mode with some current Linux distros, you will need to
-download, compile and install the current development version of wpa_supplicant
-from the following site:
-
-https://w1.fi/cgit/
-
-Note: There is a file in the `docs` folder called `Update_wpa_supplicant_v3a.md`
-that may help with updating wpa_supplicant.
-
-Note: Some distros appear to have versions of Network Manager that are not
-compatible with this driver. If that is the case, you may need to STOP or KILL
-Network Manager and connect using wpa_supplicant.
-
-WPA3-SAE is working well in AP mode using hostapd with current versions of the
-Raspberry Pi OS.
+Answer: WPA3-SAE support is in this driver according to Realtek and it
+works well on some Linux distros but not all. Generally the reason for
+WPA3 not working on Linux distros is that the distro has an old version
+of wpa_supplicant or Network Manager. Your options are to upgrade to a
+more modern distro (most distros released after mid 2022) or compile and
+install new versions of the wpa_supplicant and Network Manager utilities.
 
 -----
 
-Question: I bought two rtl8811cu based adapters and am planning to use both in
-the same computer. How do I set that up?
+Question: I bought two rtl8811cu based adapters and am planning to use
+both in the same computer. How do I set that up?
 
-Answer: You can't without considerable technical skills.  Realtek drivers do not
-support more than one adapter with the same chipset in the same computer. You
-can have multiple Realtek based adapters in the same computer as long as the
-adapters are based on different chipsets.
+Answer: Realtek drivers do not support more than one adapter with the
+same chipset in the same computer. You can have multiple Realtek based
+adapters in the same computer as long as the adapters are based on
+different chipsets.
 
 -----
 
-Question: Why do you recommend Mediatek based adapters when you maintain this
-repo for a Realtek driver?
+Question: Why do you recommend Mediatek based adapters when you maintain
+this repo for a Realtek driver?
 
-Answer: Many new and existing Linux users already have adapters based on Realtek
-chipsets. This repo is for Linux users to support their existing adapters but my
-STRONG recommendation is for Linux users to seek out USB WiFi solutions based on
-Mediatek chipsets:
+Answer: Many new and existing Linux users already have adapters based on
+Realtek chipsets. This repo is for Linux users to support their existing
+adapters but my STRONG recommendation is for Linux users to seek out USB
+WiFi solutions based on Mediatek chipsets:
 
 https://github.com/morrownr/USB-WiFi
 
@@ -627,6 +608,33 @@ present what you know to the devs of your distro via their problem
 reporting system. Turning off secure boot is NOT a fix. A real fix needs
 to happen.
 
+-----
+
+Question: Can you provide additional information about monitor mode?
+
+Answer: I have a repo that is setup to help with monitor mode:
+
+https://github.com/morrownr/Monitor_Mode
+
+Work to improve monitor mode is ongoing with this driver. Your
+reports of success or failure are needed. If you have yet to buy an
+adapter to use with monitor mode, there are adapters available that are
+known to work very well with monitor mode. My recommendation for those
+looking to buy an adapter for monitor mode is to buy adapters based on
+the following chipsets: mt7921au, mt7612u, mt7610u, rtl8812au and
+rtl8811au. My specific recommendations for adapters in order of
+preference are:
+
+ALFA AWUS036ACHM - long range - in-kernel driver
+
+ALFA AWUS036ACM - in-kernel driver
+
+ALFA AWUS036ACH - long range - [driver](https://github.com/morrownr/8812au-20210629)
+
+ALFA AWUS036ACS - [driver](https://github.com/morrownr/8821au-20210708)
+
+To ask questions, go to [USB-WiFi](https://github.com/morrownr/USB-WiFi)
+and post in `Discussions` or `Issues`.
 
 -----
 
