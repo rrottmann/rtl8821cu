@@ -5,7 +5,7 @@
 # Supports dkms and non-dkms installations.
 
 SCRIPT_NAME="install-driver.sh"
-SCRIPT_VERSION="20220929"
+SCRIPT_VERSION="20221007"
 OPTIONS_FILE="8821cu.conf"
 
 # Some distros have a non-mainlined, patched-in kernel driver
@@ -54,7 +54,7 @@ echo "Running ${SCRIPT_NAME} version ${SCRIPT_VERSION}"
 if [[ -f "${MODDESTDIR}${MODULE_NAME}.ko" ]]
 then
 	echo "Removing a non-dkms installation."
-	rm -f $(MODDESTDIR)$(MODULE_NAME).ko
+	rm -f ${MODDESTDIR}${MODULE_NAME}.ko
 	/sbin/depmod -a ${KVER}
 fi
 
