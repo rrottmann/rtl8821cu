@@ -1,21 +1,3 @@
------
-
-#### Click [here](https://github.com/morrownr/USB-WiFi) for USB WiFi Adapter Information for Linux
-
------
-
-#### A FAQ is available at the end of this document.
-
------
-
-#### Problem reports go in `Issues`. Include the information obtained with:
-
-```
-sudo uname -mr; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev; iw reg get
-```
-
------
-
 ## 8821cu ( 8821cu.ko ) :rocket:
 
 ## Linux Driver for USB WiFi Adapters that are based on the RTL8811CU, RTL8821CU and RTL8731AU Chipsets
@@ -52,6 +34,8 @@ sudo uname -mr; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev;
 - VHT control (allows 80 MHz channel width in AP mode)
 - AP mode DFS channel control
 
+#### A FAQ is available at the end of this document.
+
 ### Compatible CPUs
 
 - x86, amd64
@@ -60,7 +44,7 @@ sudo uname -mr; mokutil --sb-state; lsusb; rfkill list all; dkms status; iw dev;
 ### Compatible Kernels
 
 - Kernels: 4.19 - 5.11 (Realtek)
-- Kernels: 5.12 - 6.0  (community support)
+- Kernels: 5.12 - 6.1  (community support)
 
 ### Tested Linux Distributions
 
@@ -85,9 +69,9 @@ the Installation Steps can be improved.
 
 - openSUSE Tumbleweed (rolling) (kernel 5.15)
 
-- Raspberry Pi OS (2022-04-04) (ARM 32 bit and 64 bit) (kernel 5.15)
+- Raspberry Pi OS (2022-09-22) (ARM 32 bit and 64 bit) (kernel 5.15)
 
-- Raspberry Pi Desktop (x86 32 bit) (kernel 4.19)
+- Raspberry Pi Desktop (2022-07-01) (x86 32 bit) (kernel 5.10)
 
 - Ubuntu 22.04 (kernel 5.15)
 
@@ -146,8 +130,8 @@ need to remove the driver you have installed and install the newest available be
 installing the new kernel. Use the following commands in the driver directory:
 
 ```
-$ sudo ./remove-driver.sh
 $ git pull
+$ sudo ./remove-driver.sh
 $ sudo ./install-driver.sh
 ```
 
@@ -390,15 +374,15 @@ sudo make install
 sudo reboot
 ```
 
-Note: If you use the manual build instructions script, you will need
-to repeat the process each time a new kernel is installed in your distro.
+Note: If you use the manual build instructions, you will need to repeat
+the process each time a new kernel is installed in your distro.
 
 -----
 
 ### Driver Options ( edit-options.sh )
 
 A file called `8821cu.conf` will be installed in `/etc/modprobe.d` by
-default if you use one of the scripts for installation.
+default if you use the `./install-driver.sh` script.
 
 Note: The installation script will prompt you to edit the options.
 
@@ -441,16 +425,8 @@ cd ~/src/8821cu-20210118
 
 Note: For automated builds (non-interactive), use _NoPrompt_ as an option.
 
-Option for distros that support `dkms` (almost all)
-
 ```
 sudo ./remove-driver.sh
-```
-
-Option for distros that do not support `dkms`
-
-```
-sudo ./remove-driver-no-dkms.sh
 ```
 
 -----
@@ -659,6 +635,10 @@ rtw_RFE_type=7
 ```
 
 Simply add that option to the end of the `options` line, save and reboot.
+
+-----
+
+#### [Go to Main Menu](https://github.com/morrownr/USB-WiFi)
 
 -----
 
