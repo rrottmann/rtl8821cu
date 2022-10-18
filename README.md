@@ -34,7 +34,7 @@
 - VHT control (allows 80 MHz channel width in AP mode)
 - AP mode DFS channel control
 
-#### A FAQ is available at the end of this document.
+### A FAQ is available at the end of this document.
 
 ### Compatible CPUs
 
@@ -91,13 +91,19 @@ the Installation Steps can be improved.
 
 ### Tested Hardware
 
-- [EDUP EP-AC1651 USB WiFi Adapter AC650 Dual Band USB 2.0 Nano](https://www.amazon.com/gp/product/B0872VF2D8)
-- [EDUP EP-AC1635 USB WiFi Adapter AC600 Dual Band USB 2.0](https://www.amazon.com/gp/product/B075R7BFV2)
-
+- EDUP EP-AC1651 USB WiFi Adapter AC650 Dual Band USB 2.0 Nano
+- EDUP EP-AC1635 USB WiFi Adapter AC600 Dual Band USB 2.0
 
 ### Compatible Devices
 
-Warning: Adapters listed here are not recommended for purchase as I do not recommend Linux users buy Realtek based USB WiFi adapters due to the lack of mac80211 technology drivers that are supported in-kernel as called for by Linux Wireless Standards. This repo is supported for the benefit of Linux users who already have adapters based on the supported chipsets. If you are looking for information about what adapter to buy, click [here](https://github.com/morrownr/USB-WiFi) for information about and links to recommended adapters.
+Warning: Adapters listed here are not recommended for purchase as I do
+not recommend Linux users buy Realtek based USB WiFi adapters due to the
+lack of mac80211 technology drivers that are supported in-kernel as
+called for by Linux Wireless Standards. This repo is supported for the
+benefit of Linux users who already have adapters based on the supported
+chipsets. If you are looking for information about what adapter to buy,
+click [here](https://github.com/morrownr/USB-WiFi) for information about
+and links to recommended adapters.
 
 * Cudy WU700
 * BrosTrend AC5L
@@ -125,9 +131,10 @@ driver by running the following command:
 sudo dkms status
 ```
 
-Warning: If you decide to upgrade to a new version of kernel such as 5.18 to 5.19, you
-need to remove the driver you have installed and install the newest available before
-installing the new kernel. Use the following commands in the driver directory:
+Warning: If you decide to upgrade to a new version of kernel such as
+5.18 to 5.19, you need to remove the driver you have installed and
+install the newest available before installing the new kernel. Use the
+following commands in the driver directory:
 
 ```
 $ git pull
@@ -183,7 +190,7 @@ Note: If your Linux distro does not fall into one of options listed
 below, you will need to research how to update and upgrade your system
 packages.
 
-- Option for Debian based distributions such as Ubuntu, Linux Mint, Kali and Raspberry Pi OS
+- Option for Debian based distributions such as Ubuntu, Kali and Raspberry Pi OS
 
 ```
 sudo apt update && sudo apt upgrade
@@ -400,7 +407,7 @@ Note: Documentation for Driver Options is included in the file `8821cu.conf`.
 
 -----
 
-### Removal of the Driver ( remove-driver.sh or remove-driver-no-dkms.sh )
+### Removal of the Driver ( remove-driver.sh  )
 
 Note: Removing the driver is advised in the following situations:
 
