@@ -10,4 +10,4 @@ git clone https://github.com/rrottmann/rtl8821cu.git
 cd rtl8821cu
 make
 sudo make install
-sudo modprobe 8821cu.ko
+sudo modprobe 8821cu
